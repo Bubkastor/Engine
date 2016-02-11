@@ -27,6 +27,7 @@ RenderFPS::RenderFPS(const std::shared_ptr<DX::DeviceResources>& deviceResources
 			&textFormat
 			)
 		);
+	
 
 	DX::ThrowIfFailed(
 		textFormat.As(&m_textFormat)
@@ -81,7 +82,7 @@ void RenderFPS::Render()
 	context->SaveDrawingState(m_stateBlock.Get());
 	context->BeginDraw();
 
-	// Положение в правом нижнем углу
+
 	D2D1::Matrix3x2F screenTranslation = D2D1::Matrix3x2F::Translation(
 		0, 0);
 		//logicalSize.Width - m_textMetrics.layoutWidth,
@@ -114,9 +115,12 @@ void RenderFPS::Render()
 void RenderFPS::CreateDeviceDependentResources()
 {
 	DX::ThrowIfFailed(
-		m_deviceResources->GetD2DDeviceContext()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &m_whiteBrush)
+		m_deviceResources->GetD2DDeviceContext()->CreateSolidColorBrush(
+			D2D1::ColorF(D2D1::ColorF::GreenYellow),
+			&m_whiteBrush)
 		);
 }
+
 void RenderFPS::ReleaseDeviceDependentResources()
 {
 	m_whiteBrush.Reset();
