@@ -55,11 +55,17 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="EngineMain.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Content\RenderFPS.cpp">
+      <Filter>Содержимое</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="EngineMain.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Content\RenderFPS.h">
+      <Filter>Содержимое</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

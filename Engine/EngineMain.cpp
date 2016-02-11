@@ -17,14 +17,15 @@ EngineMain::EngineMain(const std::shared_ptr<DX::DeviceResources>& deviceResourc
 	// TODO: замените это инициализацией содержимого своего приложения.
 	//m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
 
-	//m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
+	m_fpsTextRenderer = std::unique_ptr<RenderFPS>(new RenderFPS(m_deviceResources));
+	
 
 	// TODO: измените настройки таймера, если требуется режим, отличный от режима по умолчанию с переменным шагом по времени.
 	// например, для логики обновления с фиксированным временным шагом 60 кадров/с вызовите:
-	/*
-	m_timer.SetFixedTimeStep(true);
-	m_timer.SetTargetElapsedSeconds(1.0 / 60);
-	*/
+	
+	//m_timer.SetFixedTimeStep(false);
+	//m_timer.SetTargetElapsedSeconds(1.0 / 60);
+	
 }
 
 EngineMain::~EngineMain()
@@ -48,7 +49,7 @@ void EngineMain::Update()
 	{
 		// TODO: замените это функциями обновления содержимого своего приложения.
 		//m_sceneRenderer->Update(m_timer);
-		//m_fpsTextRenderer->Update(m_timer);
+		m_fpsTextRenderer->Update(m_timer);
 	});
 }
 
@@ -79,7 +80,7 @@ bool EngineMain::Render()
 	// Прорисовка объектов сцены.
 	// TODO: замените это функциями прорисовки содержимого своего приложения.
 	//m_sceneRenderer->Render();
-	//m_fpsTextRenderer->Render();
+	m_fpsTextRenderer->Render();
 
 	return true;
 }
@@ -88,13 +89,13 @@ bool EngineMain::Render()
 void EngineMain::OnDeviceLost()
 {
 	//m_sceneRenderer->ReleaseDeviceDependentResources();
-	//m_fpsTextRenderer->ReleaseDeviceDependentResources();
+	m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Уведомляет визуализаторы о том, что ресурсы устройства можно создать заново.
 void EngineMain::OnDeviceRestored()
 {
 	//m_sceneRenderer->CreateDeviceDependentResources();
-	//m_fpsTextRenderer->CreateDeviceDependentResources();
+	m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
