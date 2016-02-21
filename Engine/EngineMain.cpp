@@ -16,15 +16,15 @@ EngineMain::EngineMain(const std::shared_ptr<DX::DeviceResources>& deviceResourc
 
 	// TODO: замените это инициализацией содержимого своего приложения.
 	//m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
-
+	m_sceneRender = std::unique_ptr<RenderScene>(new RenderScene(m_deviceResources));
 	m_fpsTextRenderer = std::unique_ptr<RenderFPS>(new RenderFPS(m_deviceResources));
 	
 
 	// TODO: измените настройки таймера, если требуется режим, отличный от режима по умолчанию с переменным шагом по времени.
 	// например, для логики обновления с фиксированным временным шагом 60 кадров/с вызовите:
 	
-	//m_timer.SetFixedTimeStep(false);
-	//m_timer.SetTargetElapsedSeconds(1.0 / 60);
+	m_timer.SetFixedTimeStep(true);
+	m_timer.SetTargetElapsedSeconds(1.0 / 120);
 	
 }
 
@@ -38,7 +38,7 @@ EngineMain::~EngineMain()
 void EngineMain::CreateWindowSizeDependentResources() 
 {
 	// TODO: замените это инициализацией содержимого вашего приложения в зависимости от размера.
-	//m_sceneRenderer->CreateWindowSizeDependentResources();
+	m_sceneRender->CreateWindowSizeDependentResources();
 }
 
 // Обновляет состояние приложения один раз за кадр.
@@ -48,7 +48,7 @@ void EngineMain::Update()
 	m_timer.Tick([&]()
 	{
 		// TODO: замените это функциями обновления содержимого своего приложения.
-		//m_sceneRenderer->Update(m_timer);
+		m_sceneRender->Update(m_timer);
 		m_fpsTextRenderer->Update(m_timer);
 	});
 }
@@ -74,12 +74,12 @@ bool EngineMain::Render()
 	context->OMSetRenderTargets(1, targets, m_deviceResources->GetDepthStencilView());
 
 	// Очистка заднего буфера и представления трафарета глубины.
-	context->ClearRenderTargetView(m_deviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::CornflowerBlue);
+	context->ClearRenderTargetView(m_deviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::Black);
 	context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// Прорисовка объектов сцены.
 	// TODO: замените это функциями прорисовки содержимого своего приложения.
-	//m_sceneRenderer->Render();
+	m_sceneRender->Render();
 	m_fpsTextRenderer->Render();
 
 	return true;
@@ -88,14 +88,14 @@ bool EngineMain::Render()
 // Уведомляет визуализаторы о том, что ресурсы устройства необходимо освободить.
 void EngineMain::OnDeviceLost()
 {
-	//m_sceneRenderer->ReleaseDeviceDependentResources();
+	m_sceneRender->ReleaseDeviceDependentResources();
 	m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Уведомляет визуализаторы о том, что ресурсы устройства можно создать заново.
 void EngineMain::OnDeviceRestored()
 {
-	//m_sceneRenderer->CreateDeviceDependentResources();
+	m_sceneRender->CreateDeviceDependentResources();
 	m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
